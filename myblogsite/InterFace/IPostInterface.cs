@@ -3,9 +3,7 @@
 namespace Myblogsite.InterFace
 {
 	public interface IpostInterface
-	
 	{
-
 		List<Post> GetAllPosts();
 		Post GetById(Guid postId); 
 		Post AddPost(Post post); 

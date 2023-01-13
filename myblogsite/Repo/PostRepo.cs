@@ -17,18 +17,12 @@ public class PostRepo : IpostInterface
 		return post;
 	}
 
-	public void DeletePost(Guid id, Post post)
-	{
-		var food = _dataContext.posts.FirstOrDefault(f => f.Id == id);
-		_dataContext.posts.Remove(post);
-		_dataContext.SaveChanges();
-	}
-
 	public void DeletePost(Guid id)
 	{
-		throw new NotImplementedException();
+		var food = _dataContext.posts.FirstOrDefault(f => f.Id == id);
+		_dataContext.posts.Remove(food);
+		_dataContext.SaveChanges();
 	}
-
 	public List<Post> GetAllPosts()
 	{
 		var allpost = _dataContext.posts.ToList();
