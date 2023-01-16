@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
 using Myblogsite.InterFace;
 using Myblogsite.Models;
 using MyBlogSite.AdminPanel.Services;
@@ -11,12 +13,15 @@ namespace MyBlogSite.AdminPanel.Controllers
     {
         private readonly IpostInterface _ipostInterface;
         private readonly ISaveImageInterface _imageInterface;
+        private readonly IWebHostEnvironment _webHost;
 
         public HomeController(IpostInterface ipostInterface,
-                                ISaveImageInterface imageInterface)
+                                ISaveImageInterface imageInterface,
+                                IWebHostEnvironment webHost)
         {
             _ipostInterface = ipostInterface;
             _imageInterface = imageInterface;
+            _webHost = webHost;
         }
         [HttpGet]
         public IActionResult Index()
@@ -45,6 +50,45 @@ namespace MyBlogSite.AdminPanel.Controllers
                 Image = _imageInterface.SaveImage(viewModel.Image)
             };
             _ipostInterface.AddPost(post);
+            return RedirectToAction("index");
+        }
+        [HttpGet]
+        public IActionResult Delete(Guid id)
+        {
+            var post = _ipostInterface.GetById(id);
+            string img = Path.Combine(_webHost.WebRootPath, "photos", post.Image);
+            FileInfo info = new FileInfo(img);
+            if (info != null)
+            {
+                System.IO.File.Delete(img);
+
+            }
+            _ipostInterface.DeletePost(id);
+            return RedirectToAction("index");
+
+        }
+        [HttpGet]
+        public IActionResult Edit(Guid id)
+        {
+            var post = _ipostInterface.GetById(id);
+            return View((PostEditViewModel)post);
+        }
+        [HttpPost]
+        public IActionResult Edit(PostEditViewModel viewModel)
+        {
+            if (viewModel.NewImage is not null)
+            {
+                string img = Path.Combine(_webHost.WebRootPath, "photos", viewModel.Image);
+                FileInfo info = new FileInfo(img);
+                if (info != null)
+                {
+                    System.IO.File.Delete(img);
+                }
+                _imageInterface.SaveImage(viewModel.NewImage);
+            }
+
+            _ipostInterface.UpdatePost((Post)viewModel);
+
             return RedirectToAction("index");
         }
 
