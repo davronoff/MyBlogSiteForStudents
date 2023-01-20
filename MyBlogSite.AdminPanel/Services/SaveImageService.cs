@@ -1,4 +1,6 @@
-﻿namespace MyBlogSite.AdminPanel.Services
+﻿using System;
+
+namespace MyBlogSite.AdminPanel.Services
 {
     public class SaveImageService: ISaveImageInterface
     {
@@ -22,6 +24,16 @@
             }
 
             return uniqueName;
+        }
+        public void DeleteImage(string fileName)
+        {
+            string uplodFolder = Path.Combine(webHostEnvironment.WebRootPath, "photos");
+            string filePath = Path.Combine(uplodFolder, fileName);
+            FileInfo fileInfo = new FileInfo(filePath);
+            if (fileInfo.Exists)
+            {
+                fileInfo.Delete();
+            }
         }
     }
 }

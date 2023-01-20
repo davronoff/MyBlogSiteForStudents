@@ -7,12 +7,12 @@
         <h3>Add new course</h3>
     </div>
 </div>
-<form asp-controller="home" asp-action="edit" method="post" >
+<form asp-controller="home" asp-action="edit" enctype="multipart/form-data">
         <input type="hidden" asp-for=Id value="@Model.Id" />
 
         <input asp-for=Time type="hidden" value="@Model.Time" />
 
-        <input asp-for="Image" type="file" value="@Model.Image" />
+        <input asp-for="Image" type="hidden" value="@Model.Image" />
 
     <div class="form-group mx-4" style="padding: 10px; font-size: 18px;">
         <label asp-for="Title">Title</label>

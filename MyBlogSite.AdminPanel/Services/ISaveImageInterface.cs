@@ -3,5 +3,6 @@
     public interface ISaveImageInterface
     {
         string SaveImage(IFormFile newFile);
+        void DeleteImage(string fileName);
     }
 }

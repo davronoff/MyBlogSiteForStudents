@@ -5,6 +5,7 @@ using Myblogsite.InterFace;
 using Myblogsite.Models;
 using MyBlogSite.AdminPanel.Services;
 using MyBlogSite.AdminPanel.ViewModels;
+using System;
 using System.Diagnostics;
 
 namespace MyBlogSite.AdminPanel.Controllers
@@ -56,13 +57,7 @@ namespace MyBlogSite.AdminPanel.Controllers
         public IActionResult Delete(Guid id)
         {
             var post = _ipostInterface.GetById(id);
-            string img = Path.Combine(_webHost.WebRootPath, "photos", post.Image);
-            FileInfo info = new FileInfo(img);
-            if (info != null)
-            {
-                System.IO.File.Delete(img);
-
-            }
+            _imageInterface.DeleteImage(post.Image);
             _ipostInterface.DeletePost(id);
             return RedirectToAction("index");
 
@@ -84,7 +79,7 @@ namespace MyBlogSite.AdminPanel.Controllers
                 {
                     System.IO.File.Delete(img);
                 }
-                _imageInterface.SaveImage(viewModel.NewImage);
+                viewModel.Image = _imageInterface.SaveImage(viewModel.NewImage);
             }
 
             _ipostInterface.UpdatePost((Post)viewModel);
