@@ -24,7 +24,7 @@ namespace MyBlogSite.AdminPanel.Controllers
             _imageInterface = imageInterface;
             _webHost = webHost;
         }
-        [HttpGet]
+        [HttpGet("{getall}")]
         public IActionResult Index()
         {
             var all = _ipostInterface.GetAllPosts();

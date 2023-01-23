@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Myblogsite.DataLayer;
+using Myblogsite.InterFace;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,6 +9,7 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddDbContext<DataContext>(options =>
 		options.UseSqlServer(builder.Configuration.GetConnectionString("BlogsiteDb")));
+builder.Services.AddScoped<IpostInterface, PostRepo>();
                                                 
 var app = builder.Build();  
 
